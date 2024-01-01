@@ -77,6 +77,38 @@
         ],
     });
 
+    $('#tambah-sekolah').submit(function(event) {
+        event.preventDefault();
+       
+        var formData = new FormData(this)
+        formData.append('_method', 'post')
+        formData.append('_token', $('meta[name="csrf-token"]').attr('content'))
+
+        $.ajax({
+            method: "POST",
+            url: "{{ url()->current() }}",
+            data: formData,
+            dataType: "JSON",
+            cache: false,
+            contentType: false,
+            processData: false,
+            beforeSend: function() {
+                clearValidationMessage('add', 'msg')
+            },
+            success: function(response) {
+                showSwal('Data berhasil ditambah', 'success')
+                $('#modal-tambah').modal('hide')
+                location.reload()
+            },
+            error: function(response) {
+                if (response.status == 422) {
+                    let error = response.responseJSON.errors
+                    validationMessageRender(error, 'add', 'msg')
+                }
+            }
+        })
+    });
+
     $('#myTable tbody').on('click', '.btn-view', function() {
         let detail = $(this).data('detail')
         $('#modal-view-pelamar').modal('show')

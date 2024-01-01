@@ -6,30 +6,35 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form role="form text-left">
+                <form role="form text-left" id="tambah-sekolah">
                     <div class="row">
                         <div class="col-md-6 col-lg-6">
                             <label>Nama Sekolah</label>
                             <div class="input-group mb-3">
-                                <input type="text" class="form-control" id="view-idklasifikasi">
+                                <input type="text" class="form-control" id="add-nama" name="nama">
+                                <div id="add-nama-msg"></div>
                             </div>
                             <div class="form-group mb-3">
                                 <label>Alamat</label>
-                                <textarea class="form-control" id="view-alamat" rows="1"></textarea>
+                                <textarea class="form-control" id="add-alamat" name="alamat" rows="1"></textarea>
+                                <div id="add-alamat-msg"></div>
                             </div>
                             <div class="form-group mb-3">
                                 <label>Gambar Sekolah</label>
-                                <input type="file" class="form-control" id="view-idklasifikasi">
+                                <input type="file" class="form-control" id="add-gambar" name="gambar">
+                                <div id="add-gambar-msg"></div>
                             </div>
                         </div>
                         <div class="col-md-6 col-lg-6">
                             <div class="form-group mb-3">
                                 <label>Latitude</label>
-                                <input type="text" class="form-control" id="view-idklasifikasi">
+                                <input type="text" class="form-control" id="add-latitude" name="latitude">
+                                <div id="add-latitude-msg"></div>
                             </div>
                             <div class="form-group mb-3">
                                 <label>Longitude</label>
-                                <input type="text" class="form-control" id="view-idklasifikasi">
+                                <input type="text" class="form-control" id="add-longitude" name="longitude">
+                                <div id="add-longitude-msg"></div>
                             </div>
                         </div>
                         <div class="text-end">
