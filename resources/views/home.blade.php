@@ -45,9 +45,11 @@
 
     var map = L.map('map').setView([1.1418892, 104.0264516], 15);
 
-    L.esri.Vector.vectorBasemapLayer("arcgis/outdoor", {
-        apikey: apiKey,
-      }).addTo(map);
+    
+    L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',{
+    maxZoom: 20,
+    subdomains:['mt0','mt1','mt2','mt3']
+    }).addTo(map);
 
     var schoolIcon = L.icon({
     iconUrl: 'assets/school.png',
@@ -56,12 +58,13 @@
     shadowSize:   [50, 64], // size of the shadow
     iconAnchor:   [15, 0],
     popupAnchor:  [0, 0],
-});
+    });
 
-$(document).ready(function() {
+
+    var markers = L.markerClusterGroup();
     $.getJSON('sekolah', function(data){
         $.each(data, function(index){
-            var marker = L.marker([data[index].latitude, data[index].longitude], {icon: schoolIcon}).addTo(map);
+            var marker = L.marker([data[index].latitude, data[index].longitude], {icon: schoolIcon});
             marker.on('click', (e)=>{
                 // marker.bindPopup(data[index].nama).openPopup();
                 var latlng = L.latLng(data[index].latitude, data[index].longitude);
@@ -80,9 +83,10 @@ $(document).ready(function() {
                     });
                 });
             });
+            markers.addLayer(marker);
         })
     });
-});
+    map.addLayer(markers);
 
 
 </script>
