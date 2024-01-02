@@ -22,7 +22,7 @@
             <div class="row justify-content-center">
                 <div class="col-lg-5 text-center mx-auto">
                     <h1 class="text-white mb-2 mt-5">Selamat Datang!</h1>
-                    <p class="text-lead text-white">Selamat datang di Aplikasi Lowongan Kerja.</p>
+                    <p class="text-lead text-white">Selamat datang di Aplikasi GIS Sekolah.</p>
                 </div>
             </div>
         </div>

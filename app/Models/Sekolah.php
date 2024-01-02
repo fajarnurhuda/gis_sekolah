@@ -10,4 +10,8 @@ class Sekolah extends Model
     use HasFactory;
 
     protected $table = "sekolah";
+
+    protected $primaryKey = 'id_sekolah';
+    protected $guarded = [];
+    // public $timestamps = true;
 }

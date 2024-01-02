@@ -19,6 +19,10 @@
     <script src="https://unpkg.com/esri-leaflet-vector@4.2.3/dist/esri-leaflet-vector.js" crossorigin=""></script>
     <script src="https://code.jquery.com/jquery-3.7.1.js"
         integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="assets/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="assets/dist/MarkerCluster.Default.css" />
+    <script src="assets/dist/leaflet.markercluster-src.js"></script>
 </head>
 <style>
     #map {
@@ -42,7 +46,7 @@
     var map = L.map('map').setView([1.1418892, 104.0264516], 15);
 
     L.esri.Vector.vectorBasemapLayer("arcgis/outdoor", {
-        apikey: apiKey
+        apikey: apiKey,
       }).addTo(map);
 
     var schoolIcon = L.icon({
@@ -65,7 +69,7 @@ $(document).ready(function() {
                     $.each(detail, function(index){ 
                         // marker.bindPopup(detail[index].nama).openPopup();
                         // alert(detail[index].nama);
-                        var html = '<img height="124px" width="248px" src="assets/sekolah/'+ detail[index].gambar+'">';
+                        var html = '<img height="124px" width="248px" src="storage/'+ detail[index].gambar+'">';
                             html+='<h5>Nama Sekolah : '+ detail[index].nama +'</h5>';
                             html+='<h5>Alamat : '+ detail[index].alamat +'</h5>';
                            
@@ -79,9 +83,6 @@ $(document).ready(function() {
         })
     });
 });
-
-
-
 
 
 </script>

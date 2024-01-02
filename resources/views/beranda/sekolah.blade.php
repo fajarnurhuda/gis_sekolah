@@ -7,7 +7,7 @@
                 <h5 class="mb-0">{{$title}}</h5>
                 <div class="text-end ms-auto">
                     <button type="button" class="btn btn-xs btn-primary mb-0" data-bs-toggle="modal"
-                        data-bs-target="#modal-view-sekolah">
+                        data-bs-target="#modal-add-sekolah">
                         <i class="fas fa-plus pe-2"></i> Tambah Data
                     </button>
                 </div>
@@ -97,7 +97,7 @@
             },
             success: function(response) {
                 showSwal('Data berhasil ditambah', 'success')
-                $('#modal-tambah').modal('hide')
+                $('#modal-add-sekolah').modal('hide')
                 location.reload()
             },
             error: function(response) {
@@ -109,52 +109,63 @@
         })
     });
 
-    $('#myTable tbody').on('click', '.btn-view', function() {
-        let detail = $(this).data('detail')
-        $('#modal-view-pelamar').modal('show')
-        $('#view-idklasifikasi').val(detail.lowonganhub.klasifikasihub.name)
-        $('#view-username').val(detail.username)
-        $('#view-nik').val(detail.nik)
-        if(detail.jk == 1) {
-            $("#view-jk").val(`Pria`)
-        } else {
-            $("#view-jk").val(`Wanita`)
-        }
-        $('#view-tempatLahir').val(detail.tempatLahir)
-        $('#view-tanggalLahir').val(detail.tanggalLahir)
-        $('#view-noHp').val(detail.noHp)
-        $('#view-noWa').val(detail.noWa)
-        $('#view-email').val(detail.email)
-        $('#view-pendidikan').val(detail.tkPendidikan)
-        $('#view-alamat').val(detail.alamat)
-        $('#view-pengalaman').val(detail.pengalaman)
-        $('#view-keahlian').val(detail.keahlian)
-    });
+    function clearValidationMessage(prefix = '', suffix = '') {
+    $(`*input[id*=${prefix}]`).each(function () {
+        $(this).removeClass('is-invalid')
+        $(this).removeClass('is-valid')
+
+        $(this).removeClass('border-danger')
+        $(this).removeClass('border-success')
+    })
+
+    $(`*select[id*=${prefix}]`).each(function () {
+        $(this).removeClass('is-invalid')
+        $(this).removeClass('is-valid')
+
+        $(this).removeClass('border-danger')
+        $(this).removeClass('border-success')
+    })
+
+    $(`*textarea[id*=${prefix}]`).each(function () {
+        $(this).removeClass('is-invalid')
+        $(this).removeClass('is-valid')
+
+        $(this).removeClass('border-danger')
+        $(this).removeClass('border-success')
+    })
+
+    $(`*div[id^=${prefix}]`).each(function () {
+        $(this).html('')
+    })
+}
+
+function validationMessageRender(response, prefix = '', suffix = '') {
+    for (let key in response) {
+        let firstError = response[key][0]
+
+        $(`#${prefix != '' ? prefix + '-' : ''}` + key).focus();
+        $(`#${prefix != '' ? prefix + '-' : ''}` + key).removeClass('is-valid border-success');
+        $(`#${prefix != '' ? prefix + '-' : ''}` + key).addClass('is-invalid border-danger');
+        $(`#${prefix != '' ? prefix + '-' : ''}` + key + `${suffix != '	' ? '-' + suffix : ''}`).html(`<small class="text-danger">${firstError}</small>`);
+    }
+}
 
     $('#myTable tbody').on('click', '.btn-edit', function() {
         let detail = $(this).data('detail')
-        console.log(detail)
-        $('#modal-edit-pelamar').modal('show')
-        $('#edit-idKlasifikasi').val(detail.lowonganhub.klasifikasihub.id)
-        $('#edit-username').val(detail.username)
-        $('#edit-id').val(detail.id)
-        $('#edit-nik').val(detail.nik)
-        $('#edit-jk').val(detail.jk).trigger('change')
-        $('#edit-tempatLahir').val(detail.tempatLahir)
-        $('#edit-tanggalLahir').val(detail.tanggalLahir)
-        $('#edit-noHp').val(detail.noHp)
-        $('#edit-noWa').val(detail.noWa)
-        $('#edit-email').val(detail.email)
-        $('#edit-tkPendidikan').val(detail.tkPendidikan).trigger('change')
+        console.log(detail.gambar)
+        let gambar = detail.gambar
+        $('#modal-edit-sekolah').modal('show')
+        $('#edit-id_sekolah').val(detail.id_sekolah)
+        $('#edit-nama').val(detail.nama)
         $('#edit-alamat').val(detail.alamat)
-        $('#edit-pengalaman').val(detail.pengalaman)
-        $('#edit-keahlian').val(detail.keahlian)
+        $('#edit-latitude').val(detail.latitude)
+        $('#edit-longitude').val(detail.longitude)
     });
 
-    $('#form-edit-pelamar').submit(function(event) {
+    $('#form-edit-sekolah').submit(function(event) {
         event.preventDefault();
 
-        let id = $('#edit-id').val()
+        let id = $('#edit-id_sekolah').val()
 
         var formData = new FormData(this)
         formData.append('_method', 'put')
@@ -173,7 +184,7 @@
             },
             success: function(results) {
                 showSwal('Data berhasil dirubah', 'success')
-                $('#modal-edit-pelamar').modal('hide')
+                $('#modal-edit-sekolah').modal('hide')
                 location.reload()
             },
             error: function(response) {
@@ -189,7 +200,7 @@
         let id = $(this).data('id')
         
         Swal.fire({
-            title: 'Hapus Pelamar?',
+            title: 'Hapus sekolah?',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#d33',

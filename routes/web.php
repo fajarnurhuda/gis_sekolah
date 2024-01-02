@@ -26,6 +26,7 @@ Route::get('/sekolah', [SekolahController::class, 'sekolah']);
 Route::get('/detail/{id}', [SekolahController::class, 'detail']);
 Route::get('/auth', [AuthController::class, 'index'])->middleware('guest');
 Route::post('/auth', [AuthController::class, 'authenticate']);
+Route::get('/logout', [AuthController::class, 'logout']);
 
 Route::get('/beranda', [BerandaController::class, 'index'])->middleware('auth');
 Route::resource('/dataSekolah', DataSekolahController::class);

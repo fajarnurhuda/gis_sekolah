@@ -22,12 +22,11 @@ class DataSekolahController extends Controller
         if ($request->ajax()) {
             return DataTables::of($sekolah)->addIndexColumn()
                 ->addColumn('gambar', function ($row) {
-                    return '<a href="' . asset('storage/' . $row->foto) . '" target="_blank"><img src="' . asset('storage/' . $row->foto) . '" class="avatar avatar-sm me-1" alt="avatar image"></a>';
-                })->addColumn('aksi', function ($pelamar) {
+                    return '<a href="' . asset('storage/' . $row->gambar) . '" target="_blank"><img src="' . asset('storage/' . $row->gambar) . '" class="avatar avatar-sm me-1" alt="avatar image"></a>';
+                })->addColumn('aksi', function ($sekolah) {
                     return Blade::render('
-                <a href="#" class="badge bg-gradient-primary mt-3 btn-view" data-detail="' . htmlspecialchars($pelamar) . '" data-id=' . $pelamar->id . '><i class="fa fa-eye"></i></a>
-                <a href="#" class="badge bg-gradient-warning btn-edit" data-detail="' . htmlspecialchars($pelamar) . '"  data-id= ' . $pelamar->id . ' ><i class="fa fa-pencil"></i></a>
-                <button class="badge bg-gradient-danger mt-3 btn-hapus border-0" data-detail="' . htmlspecialchars($pelamar) . '" data-id=' . $pelamar->id . '><i class="fa fa-trash"></i></button>', ['pelamar' => $pelamar]);
+                <a href="#" class="badge bg-gradient-warning btn-edit" data-detail="' . htmlspecialchars($sekolah) . '"  data-id= ' . $sekolah->id_sekolah . ' ><i class="fa fa-pencil"></i></a>
+                <button class="badge bg-gradient-danger mt-3 btn-hapus border-0" data-detail="' . htmlspecialchars($sekolah) . '" data-id=' . $sekolah->id_sekolah . '><i class="fa fa-trash"></i></button>', ['sekolah' => $sekolah]);
                 })->rawColumns(['gambar', 'aksi'])->make(true);
         }
 
@@ -56,7 +55,33 @@ class DataSekolahController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validateData = $request->validate([
+            'nama'   => 'required',
+            'alamat'        => 'required',
+            'latitude'          => 'required',
+            'longitude'    => 'required',
+            'gambar'            => 'mimes:jpg,jpeg,png|image|max:2048|required',
+        ]);
+
+        if ($request->file('gambar')) {
+            $validateData['gambar'] = $request->file('gambar')->store('gambar');
+        }
+
+        $tambah = Sekolah::create($validateData);
+
+        if ($tambah) {
+            $success = 'success';
+            $message = "Data berhasil ditambah";
+            $validateData['updated_at'] = date('Y-m-d H:i:s');
+        } else {
+            $success = 'error';
+            $message = "Data gagal ditambah";
+        }
+        //  return response
+        return response()->json([
+            'status' => $success,
+            'message' =>  $message,
+        ]);
     }
 
     /**
@@ -78,7 +103,6 @@ class DataSekolahController extends Controller
      */
     public function edit($id)
     {
-        //
     }
 
     /**
@@ -90,7 +114,33 @@ class DataSekolahController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validateData = $request->validate([
+            'nama'   => 'required',
+            'alamat'        => 'required',
+            'latitude'          => 'required',
+            'longitude'    => 'required',
+            'gambar'            => 'mimes:jpg,jpeg,png|image|max:2048',
+        ]);
+
+        if ($request->file('gambar')) {
+            $validateData['gambar'] = $request->file('gambar')->store('gambar');
+        }
+
+        $edit = Sekolah::where('id_sekolah', $id)->update($validateData);
+
+        if ($edit) {
+            $success = 'success';
+            $message = "Data berhasil dirubah";
+        } else {
+            $success = 'error';
+            $message = "Data gagal dirubah";
+        }
+
+        //  return response
+        return response()->json([
+            'status' => $success,
+            'message' => $message,
+        ]);
     }
 
     /**
@@ -101,6 +151,20 @@ class DataSekolahController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $hapus = Sekolah::destroy($id);
+
+        if ($hapus) {
+            $success = 'success';
+            $message = "Data berhasil dihapus";
+        } else {
+            $success = 'error';
+            $message = "Data gagal di hapus";
+        }
+
+        //  return response
+        return response()->json([
+            'status' => $success,
+            'message' => $message,
+        ]);
     }
 }
